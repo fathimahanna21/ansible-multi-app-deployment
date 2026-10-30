@@ -1,0 +1,24 @@
+# Private inventory
+inventory/hosts.ini
+
+# SSH private keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Credentials and environment files
+.env
+.env.*
+*.vault_password
+vault-password-file
+
+# Python generated files
+__pycache__/
+*.pyc
+venv/
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store

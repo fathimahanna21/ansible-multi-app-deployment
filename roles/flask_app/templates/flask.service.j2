@@ -1,0 +1,13 @@
+[Unit]
+Description=Flask Application
+After=network.target
+
+[Service]
+User={{ flask_app_user }}
+Group={{ flask_app_user }}
+WorkingDirectory={{ flask_app_dir }}
+ExecStart={{ flask_app_dir }}/venv/bin/gunicorn --workers {{ flask_workers }} --bind 127.0.0.1:{{ flask_port }} app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

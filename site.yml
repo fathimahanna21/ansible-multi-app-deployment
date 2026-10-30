@@ -1,0 +1,9 @@
+---
+- name: Deploy Nginx and applications
+  hosts: web
+  become: true
+
+  roles:
+    - nginx
+    - flask_app
+    - node_app

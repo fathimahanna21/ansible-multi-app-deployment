@@ -1,0 +1,6 @@
+---
+nginx_package: nginx
+nginx_service: nginx
+
+flask_port: 5000
+node_port: 3000

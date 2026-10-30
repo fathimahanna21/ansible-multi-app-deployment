@@ -1,0 +1,5 @@
+---
+node_app_name: node_app
+node_app_dir: /opt/node_app
+node_app_user: nodeuser
+node_port: 3000

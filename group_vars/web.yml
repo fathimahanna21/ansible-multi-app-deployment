@@ -1,0 +1,5 @@
+---
+environment_name: development
+
+flask_port: 5000
+node_port: 3000

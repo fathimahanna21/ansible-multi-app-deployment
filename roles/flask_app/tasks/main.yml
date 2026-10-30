@@ -1,0 +1,67 @@
+---
+- name: Install Python dependencies
+  ansible.builtin.apt:
+    name:
+      - python3
+      - python3-pip
+      - python3-venv
+    state: present
+    update_cache: true
+
+- name: Create Flask application user
+  ansible.builtin.user:
+    name: "{{ flask_app_user }}"
+    system: true
+    shell: /usr/sbin/nologin
+    create_home: false
+
+- name: Create Flask application directory
+  ansible.builtin.file:
+    path: "{{ flask_app_dir }}"
+    state: directory
+    owner: "{{ flask_app_user }}"
+    group: "{{ flask_app_user }}"
+    mode: '0755'
+
+- name: Copy Flask application
+  ansible.builtin.copy:
+    src: app.py
+    dest: "{{ flask_app_dir }}/app.py"
+    owner: "{{ flask_app_user }}"
+    group: "{{ flask_app_user }}"
+    mode: '0644'
+  notify: Restart Flask
+
+- name: Copy Flask requirements
+  ansible.builtin.copy:
+    src: requirements.txt
+    dest: "{{ flask_app_dir }}/requirements.txt"
+    owner: "{{ flask_app_user }}"
+    group: "{{ flask_app_user }}"
+    mode: '0644'
+
+- name: Create Python virtual environment
+  ansible.builtin.command:
+    cmd: python3 -m venv "{{ flask_app_dir }}/venv"
+    creates: "{{ flask_app_dir }}/venv/bin/activate"
+
+- name: Install Flask packages
+  ansible.builtin.pip:
+    requirements: "{{ flask_app_dir }}/requirements.txt"
+    virtualenv: "{{ flask_app_dir }}/venv"
+
+- name: Deploy Flask systemd service
+  ansible.builtin.template:
+    src: flask.service.j2
+    dest: /etc/systemd/system/flask_app.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Flask
+
+- name: Enable and start Flask application
+  ansible.builtin.systemd:
+    name: flask_app
+    enabled: true
+    state: started
+    daemon_reload: true

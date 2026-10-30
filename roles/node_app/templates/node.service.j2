@@ -1,0 +1,13 @@
+[Unit]
+Description=Node.js Application
+After=network.target
+
+[Service]
+User={{ node_app_user }}
+Group={{ node_app_user }}
+WorkingDirectory={{ node_app_dir }}
+ExecStart=/usr/bin/node {{ node_app_dir }}/app.js
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
