@@ -4,6 +4,7 @@
   become: true
 
   roles:
+    - nginx_cleanup
     - nginx
     - flask_app
     - node_app

@@ -1,0 +1,17 @@
+---
+- name: Stop Nginx service if it exists
+  ansible.builtin.service:
+    name: nginx
+    state: stopped
+  failed_when: false
+
+- name: Uninstall Nginx completely
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - nginx-common
+      - nginx-core
+    state: absent
+    purge: true
+    autoremove: true
+    update_cache: false
